@@ -1,0 +1,53 @@
+---
+title: "EnSusalud"
+author: "Jessica Zafra"
+date: "2024-08-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r loading packages, echo=FALSE, message=FALSE}
+
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(tidyverse, 
+               knitr, 
+               here,
+               janitor,
+               inspectdf,
+               gtsummary)
+
+```
+
+## Introducción
+
+## Métodos
+
+Descripción de la base de datos
+
+```{r explorando base, echo=FALSE}
+
+data <- readxl::read_excel(here("data/Database_4.xlsx")) %>% 
+  select(4:28, 88:103,147:149) #too many variables, need to select some and then clean
+
+#str(data)
+names(data) 
+get_dupes(data) # no duplicates
+
+#revisando variables sociodemograficas
+data %>% 
+  select(6:18) %>% 
+  tbl_summary()
+
+inspect_num(data) %>% 
+  show_plot()
+
+```
+
+## Resultados
+
+```{r cars}
+summary(cars)
+```
