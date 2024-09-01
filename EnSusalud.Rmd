@@ -30,7 +30,7 @@ Descripción de la base de datos
 ```{r explorando base, echo=FALSE}
 
 data <- readxl::read_excel(here("data/Database_4.xlsx")) %>% 
-  select(4:28, 88:103,147:149) #too many variables, need to select some and then clean
+  select(4:28, 88:103,147:149) #variables sociodem, violencia, corrupcion
 
 #str(data)
 names(data) 
