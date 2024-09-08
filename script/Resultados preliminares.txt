@@ -1,0 +1,269 @@
+. do "C:\Users\USER\AppData\Local\Temp\STD2d8c_000000.tmp"
+
+. 
+. *********************   
+. *3. Analysis
+. *********************   
+. 
+. *Corrupción
+. poisson pp92_corrupcion i.sex i.grupo_edad i.depression i.anxiety JSS4 ESAPG ESGSS ESCTCS_Individuales ESCTCS_Estructurales SWLS MBI_A
+> gotamientoEmocional MBI_Despersonalizacion MBI_Realizacion_Personal, irr cformat(%9.2f)
+
+Iteration 0:   log likelihood = -299.00712  
+Iteration 1:   log likelihood = -299.00712  
+
+Poisson regression                              Number of obs     =        172
+                                                LR chi2(15)       =       3.24
+                                                Prob > chi2       =     0.9994
+Log likelihood = -299.00712                     Pseudo R2         =     0.0054
+
+------------------------------------------------------------------------------------------
+         pp92_corrupcion |        IRR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------------------+----------------------------------------------------------------
+                   1.sex |       0.98       0.08    -0.20   0.845         0.83        1.16
+                         |
+              grupo_edad |
+                  31-50  |       1.00       0.14     0.01   0.989         0.77        1.31
+                  51-65  |       0.98       0.16    -0.15   0.884         0.72        1.33
+                    66+  |       1.01       0.24     0.05   0.960         0.64        1.61
+                         |
+            1.depression |       1.03       0.17     0.16   0.870         0.75        1.41
+               1.anxiety |       1.03       0.13     0.23   0.821         0.80        1.33
+                    JSS4 |       1.00       0.01    -0.64   0.522         0.98        1.01
+                   ESAPG |       1.00       0.01     0.14   0.890         0.98        1.03
+                   ESGSS |       0.99       0.01    -0.93   0.352         0.98        1.01
+     ESCTCS_Individuales |       1.00       0.01    -0.39   0.696         0.98        1.01
+    ESCTCS_Estructurales |       1.00       0.02    -0.03   0.976         0.97        1.03
+                    SWLS |       1.01       0.01     0.76   0.446         0.99        1.02
+MBI_AgotamientoEmocional |       1.00       0.01    -0.14   0.887         0.99        1.01
+  MBI_Despersonalizacion |       1.00       0.01    -0.14   0.888         0.97        1.03
+MBI_Realizacion_Personal |       1.00       0.01    -0.32   0.749         0.99        1.01
+                   _cons |       5.75       2.18     4.62   0.000         2.73       12.07
+------------------------------------------------------------------------------------------
+Note: _cons estimates baseline incidence rate.
+
+. 
+. 
+. *Discriminación
+. poisson pp93_victima_discriminacion i.sex i.grupo_edad i.depression i.anxiety JSS4 ESAPG ESGSS ESCTCS_Individuales ESCTCS_Estructurale
+> s SWLS MBI_AgotamientoEmocional MBI_Despersonalizacion MBI_Realizacion_Personal, irr cformat(%9.2f)
+
+Iteration 0:   log likelihood = -41.309823  
+Iteration 1:   log likelihood = -33.060394  
+Iteration 2:   log likelihood = -31.561185  
+Iteration 3:   log likelihood = -31.465711  
+Iteration 4:   log likelihood = -31.464357  
+Iteration 5:   log likelihood = -31.464029  
+Iteration 6:   log likelihood = -31.463959  
+Iteration 7:   log likelihood = -31.463945  
+Iteration 8:   log likelihood = -31.463941  
+Iteration 9:   log likelihood = -31.463941  
+
+Poisson regression                              Number of obs     =        172
+                                                LR chi2(15)       =      40.26
+                                                Prob > chi2       =     0.0004
+Log likelihood = -31.463941                     Pseudo R2         =     0.3901
+
+---------------------------------------------------------------------------------------------
+pp93_victima_discriminacion |        IRR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+----------------------------+----------------------------------------------------------------
+                      1.sex |       0.32       0.36    -1.01   0.314         0.03        2.96
+                            |
+                 grupo_edad |
+                     31-50  |       0.51       0.66    -0.52   0.606         0.04        6.50
+                     51-65  |       1.59       2.63     0.28   0.779         0.06       40.74
+                       66+  |       0.00       0.00    -0.01   0.996         0.00           .
+                            |
+               1.depression |       3.14       2.84     1.27   0.205         0.53       18.49
+                  1.anxiety |       6.75       5.20     2.48   0.013         1.49       30.53
+                       JSS4 |       0.85       0.05    -2.84   0.005         0.76        0.95
+                      ESAPG |       0.93       0.10    -0.65   0.516         0.76        1.15
+                      ESGSS |       0.86       0.07    -1.94   0.052         0.73        1.00
+        ESCTCS_Individuales |       1.01       0.08     0.13   0.900         0.87        1.17
+       ESCTCS_Estructurales |       1.28       0.21     1.53   0.127         0.93        1.76
+                       SWLS |       0.99       0.06    -0.12   0.907         0.88        1.13
+   MBI_AgotamientoEmocional |       1.01       0.05     0.20   0.838         0.91        1.12
+     MBI_Despersonalizacion |       0.96       0.09    -0.44   0.660         0.79        1.16
+   MBI_Realizacion_Personal |       1.04       0.05     0.79   0.429         0.94        1.15
+                      _cons |       2.20       5.89     0.30   0.767         0.01      414.06
+---------------------------------------------------------------------------------------------
+Note: _cons estimates baseline incidence rate.
+
+. 
+. 
+. *Violencia fisica
+. poisson pp59_agredido_fisica i.sex i.grupo_edad i.depression i.anxiety JSS4 ESAPG ESGSS ESCTCS_Individuales ESCTCS_Estructurales SWLS 
+> MBI_AgotamientoEmocional MBI_Despersonalizacion MBI_Realizacion_Personal, irr cformat(%9.2f)
+
+Iteration 0:   log likelihood = -32.256735  
+Iteration 1:   log likelihood = -28.855986  
+Iteration 2:   log likelihood = -28.165063  
+Iteration 3:   log likelihood = -28.130569  
+Iteration 4:   log likelihood = -28.122691  
+Iteration 5:   log likelihood = -28.121006  
+Iteration 6:   log likelihood =  -28.12066  
+Iteration 7:   log likelihood = -28.120581  
+Iteration 8:   log likelihood = -28.120561  
+Iteration 9:   log likelihood = -28.120557  
+Iteration 10:  log likelihood = -28.120557  
+
+Poisson regression                              Number of obs     =        172
+                                                LR chi2(15)       =      14.86
+                                                Prob > chi2       =     0.4613
+Log likelihood = -28.120557                     Pseudo R2         =     0.2090
+
+------------------------------------------------------------------------------------------
+    pp59_agredido_fisica |        IRR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------------------+----------------------------------------------------------------
+                   1.sex |       0.55       0.52    -0.63   0.527         0.09        3.52
+                         |
+              grupo_edad |
+                  31-50  |   3.04e+06   7.81e+09     0.01   0.995         0.00           .
+                  51-65  |   1.38e+07   3.54e+10     0.01   0.995         0.00           .
+                    66+  |       0.51    3781.28    -0.00   1.000         0.00           .
+                         |
+            1.depression |       2.64       3.69     0.69   0.487         0.17       40.87
+               1.anxiety |       1.11       1.25     0.09   0.928         0.12       10.12
+                    JSS4 |       0.98       0.07    -0.33   0.743         0.85        1.12
+                   ESAPG |       0.97       0.12    -0.23   0.817         0.75        1.25
+                   ESGSS |       0.88       0.07    -1.56   0.119         0.74        1.03
+     ESCTCS_Individuales |       1.03       0.09     0.33   0.740         0.87        1.22
+    ESCTCS_Estructurales |       1.20       0.19     1.16   0.245         0.88        1.65
+                    SWLS |       1.02       0.07     0.29   0.771         0.88        1.18
+MBI_AgotamientoEmocional |       0.98       0.07    -0.22   0.823         0.85        1.14
+  MBI_Despersonalizacion |       1.14       0.11     1.25   0.210         0.93        1.38
+MBI_Realizacion_Personal |       0.98       0.04    -0.36   0.721         0.90        1.07
+                   _cons |       0.00       0.00    -0.01   0.995         0.00           .
+------------------------------------------------------------------------------------------
+Note: _cons estimates baseline incidence rate.
+
+. *Insultado
+. poisson pp64_insultado i.sex i.grupo_edad i.depression i.anxiety JSS4 ESAPG ESGSS ESCTCS_Individuales ESCTCS_Estructurales SWLS MBI_Ag
+> otamientoEmocional MBI_Despersonalizacion MBI_Realizacion_Personal, irr cformat(%9.2f)
+
+Iteration 0:   log likelihood = -114.94508  
+Iteration 1:   log likelihood = -114.94323  
+Iteration 2:   log likelihood = -114.94323  
+
+Poisson regression                              Number of obs     =        172
+                                                LR chi2(15)       =      18.58
+                                                Prob > chi2       =     0.2333
+Log likelihood = -114.94323                     Pseudo R2         =     0.0748
+
+------------------------------------------------------------------------------------------
+          pp64_insultado |        IRR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------------------+----------------------------------------------------------------
+                   1.sex |       0.93       0.28    -0.25   0.803         0.51        1.67
+                         |
+              grupo_edad |
+                  31-50  |       1.37       0.86     0.51   0.613         0.40        4.69
+                  51-65  |       2.70       1.80     1.49   0.136         0.73        9.98
+                    66+  |       1.67       1.58     0.55   0.585         0.26       10.62
+                         |
+            1.depression |       0.54       0.31    -1.09   0.275         0.18        1.64
+               1.anxiety |       1.84       0.72     1.57   0.117         0.86        3.95
+                    JSS4 |       0.98       0.02    -0.76   0.450         0.94        1.03
+                   ESAPG |       1.01       0.04     0.27   0.790         0.93        1.10
+                   ESGSS |       0.94       0.03    -2.06   0.039         0.89        1.00
+     ESCTCS_Individuales |       0.97       0.03    -1.02   0.307         0.91        1.03
+    ESCTCS_Estructurales |       1.06       0.06     1.08   0.280         0.95        1.19
+                    SWLS |       1.01       0.03     0.50   0.619         0.96        1.06
+MBI_AgotamientoEmocional |       1.01       0.03     0.22   0.825         0.96        1.06
+  MBI_Despersonalizacion |       1.03       0.05     0.53   0.599         0.93        1.13
+MBI_Realizacion_Personal |       1.00       0.02     0.19   0.846         0.97        1.04
+                   _cons |       0.58       0.80    -0.39   0.696         0.04        8.67
+------------------------------------------------------------------------------------------
+Note: _cons estimates baseline incidence rate.
+
+. *Amenazado
+. poisson pp69_amenazado i.sex i.grupo_edad i.depression i.anxiety JSS4 ESAPG ESGSS ESCTCS_Individuales ESCTCS_Estructurales SWLS MBI_Ag
+> otamientoEmocional MBI_Despersonalizacion MBI_Realizacion_Personal, irr cformat(%9.2f)
+
+Iteration 0:   log likelihood = -47.187431  
+Iteration 1:   log likelihood = -47.057839  
+Iteration 2:   log likelihood =  -47.05762  
+Iteration 3:   log likelihood =  -47.05762  
+
+Poisson regression                              Number of obs     =        172
+                                                LR chi2(15)       =      13.88
+                                                Prob > chi2       =     0.5345
+Log likelihood =  -47.05762                     Pseudo R2         =     0.1285
+
+------------------------------------------------------------------------------------------
+          pp69_amenazado |        IRR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------------------+----------------------------------------------------------------
+                   1.sex |       1.90       1.11     1.10   0.270         0.61        5.98
+                         |
+              grupo_edad |
+                  31-50  |       0.43       0.38    -0.97   0.334         0.08        2.38
+                  51-65  |       0.30       0.34    -1.05   0.296         0.03        2.90
+                    66+  |       0.88       1.18    -0.09   0.926         0.06       12.26
+                         |
+            1.depression |       1.50       1.47     0.41   0.680         0.22       10.23
+               1.anxiety |       1.80       1.43     0.74   0.458         0.38        8.51
+                    JSS4 |       0.98       0.05    -0.42   0.672         0.88        1.09
+                   ESAPG |       0.92       0.08    -0.98   0.326         0.78        1.09
+                   ESGSS |       0.92       0.06    -1.33   0.182         0.82        1.04
+     ESCTCS_Individuales |       1.10       0.08     1.36   0.175         0.96        1.26
+    ESCTCS_Estructurales |       0.90       0.10    -0.95   0.340         0.71        1.12
+                    SWLS |       1.00       0.06     0.05   0.963         0.90        1.12
+MBI_AgotamientoEmocional |       0.99       0.04    -0.16   0.873         0.91        1.08
+  MBI_Despersonalizacion |       1.09       0.10     0.96   0.336         0.91        1.30
+MBI_Realizacion_Personal |       1.02       0.04     0.52   0.606         0.94        1.11
+                   _cons |       0.37       0.87    -0.42   0.671         0.00       36.62
+------------------------------------------------------------------------------------------
+Note: _cons estimates baseline incidence rate.
+
+. *Acoso sexual
+. poisson pp74_acoso_sexual i.sex i.grupo_edad i.depression i.anxiety JSS4 ESAPG ESGSS ESCTCS_Individuales ESCTCS_Estructurales SWLS MBI
+> _AgotamientoEmocional MBI_Despersonalizacion MBI_Realizacion_Personal, irr cformat(%9.2f)
+
+Iteration 0:   log likelihood = -31.561574  
+Iteration 1:   log likelihood = -27.599309  
+Iteration 2:   log likelihood = -26.844496  
+Iteration 3:   log likelihood = -26.785335  
+Iteration 4:   log likelihood =  -26.77127  
+Iteration 5:   log likelihood = -26.768353  
+Iteration 6:   log likelihood = -26.767739  
+Iteration 7:   log likelihood = -26.767599  
+Iteration 8:   log likelihood = -26.767564  
+Iteration 9:   log likelihood = -26.767557  
+Iteration 10:  log likelihood = -26.767556  
+
+Poisson regression                              Number of obs     =        172
+                                                LR chi2(15)       =      28.96
+                                                Prob > chi2       =     0.0163
+Log likelihood = -26.767556                     Pseudo R2         =     0.3510
+
+------------------------------------------------------------------------------------------
+       pp74_acoso_sexual |        IRR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------------------+----------------------------------------------------------------
+                   1.sex |       0.58       0.66    -0.48   0.630         0.06        5.43
+                         |
+              grupo_edad |
+                  31-50  |   1.74e+07   3.31e+10     0.01   0.993         0.00           .
+                  51-65  |   1.19e+07   2.27e+10     0.01   0.993         0.00           .
+                    66+  |       4.80   29006.68     0.00   1.000         0.00           .
+                         |
+            1.depression |       1.34       1.68     0.24   0.813         0.12       15.48
+               1.anxiety |       1.40       1.31     0.36   0.719         0.22        8.79
+                    JSS4 |       0.98       0.06    -0.32   0.746         0.86        1.11
+                   ESAPG |       1.18       0.21     0.91   0.360         0.83        1.68
+                   ESGSS |       1.09       0.08     1.13   0.257         0.94        1.25
+     ESCTCS_Individuales |       1.10       0.08     1.27   0.203         0.95        1.26
+    ESCTCS_Estructurales |       0.62       0.09    -3.43   0.001         0.48        0.82
+                    SWLS |       1.07       0.10     0.75   0.455         0.89        1.30
+MBI_AgotamientoEmocional |       1.18       0.09     2.19   0.029         1.02        1.36
+  MBI_Despersonalizacion |       1.07       0.13     0.54   0.590         0.84        1.35
+MBI_Realizacion_Personal |       0.99       0.04    -0.15   0.879         0.91        1.08
+                   _cons |       0.00       0.00    -0.01   0.988         0.00           .
+------------------------------------------------------------------------------------------
+Note: _cons estimates baseline incidence rate.
+
+. 
+.   
+.   
+. 
+end of do-file
+
+. 
