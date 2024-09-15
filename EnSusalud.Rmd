@@ -1,7 +1,7 @@
 ---
 title: "EnSusalud"
 author: "Jessica Zafra"
-date: "2024-09-08"
+date: "2024-09-15"
 output: html_document
 ---
 
@@ -36,9 +36,9 @@ Dado este contexto, el presente estudio tiene como objetivo explorar las asociac
 ## Métodos
 
 ### Diseño de estudio
-Estudio secundario en el cuál se analizó la Encuesta Nacional de Satisfacción del personal de salud de hospitales del Ministerio de Salud y Gobiernos Regionales en el Sistema de Salud Peruano (ENSUSALUD 2024).
+Estudio secundario en el cuál se analizó un piloto de la Encuesta Nacional de Satisfacción del personal de salud de hospitales del Ministerio de Salud y Gobiernos Regionales en el Sistema de Salud Peruano (ENSUSALUD 2024).
 
-Esta encuesta tiene un diseño transversal y fue realizada en profesionales de salud que trabajan en hospitales públicos adscritos al Ministerio de Salud (MINSA) y los Gobiernos Regionales (GOREs) en Perú durante el primer semestre del año 2024.
+Esta encuesta tuvo un diseño transversal y fue realizada en profesionales de salud que trabajan en hospitales públicos adscritos al Ministerio de Salud (MINSA) y los Gobiernos Regionales (GOREs) en Perú durante el primer semestre del año 2024.
 
 ### Población
 Se incluyó a profesionales profesionales de medicina, enfermería u obstreticia en las IPRESS seleccionados por al menos 12 meses continuos en la IPRESS. Se excluyó a aquellos que no puedan responder debido a un accidente cerebro vascular con secuelas, aquellos que no desean participar o que no firmen el consentimiento informado. Además, se excluyó a aquellos que realicen exclusivamente teletrabajo.
@@ -50,9 +50,7 @@ Se eliminó de la base de datos a aquellos que no completaron el cuestionario po
 
 ### Muestreo 
 
-Se realizó un muestreo probabilístico aleatorio simple en base al listado de todos los profesionales de la salud registrados en las oficinas de personal o recursos humanos. Se utilizó una página web (www.random.org) para seleccionar a los participantes de forma aleatoria. 
-
-Se definirán cuotas por grupos de edad (18 a 39 años, 40 a 65 años) y de profesión (medicina, enfermería y obstetricia) individualizadas para cada IPRESS (con afijación proporcional). [Revisar esta parte. No me parece que se haya hecho]
+Se realizó un muestreo por conveniencia. El personal de campo buscó entrevistar profesionales de salud en los establecimientos de salud.
 
 ### Variables y medición
 Se consideraron variables sociodemográficas como: ...
@@ -61,6 +59,7 @@ Además, las variables de interés corrupción, discriminación y violencia...
 
 ### Análisis de datos
 
+Se realizó una limpieza de la base de datos. Para ello se homogenizó las categorías de respuesta de las variables categóricas y, para las variables numéricas, se eliminó valores implausibles.
 
 
 ```{r = explorando base, echo=FALSE, message=FALSE}
@@ -93,7 +92,25 @@ data2 <- readxl::read_xlsx(here("data/Database_4.xlsx")) %>%
          dejar_eess = x25_actualmente_piensa_o_tiene_planificado_dejar_de_trabajar_en_este_establecimiento,
          factor_dejar_eess = x26_que_factores_influirian_mas_en_usted_para_cambiar_de_trabajo,
          tiempo_eess = x28_cuantos_anos_viene_laborando_en_este_establecimiento_de_salud,
-         horas_semana = x33_en_promedio_cuantas_horas_trabaja_a_la_semana_en_todas_sus_actividades_remuneradas) %>% 
+         horas_semana = x33_en_promedio_cuantas_horas_trabaja_a_la_semana_en_todas_sus_actividades_remuneradas,
+         agresion_fisica = x59_alguna_vez_durante_su_vida_profesional_ha_sido_agredido_a_fisicamente_en_su_lugar_de_trabajo,
+         agresion_fisica_quien = x60_respecto_a_la_agresion_o_agresiones_fisicas_recibidas_en_su_lugar_de_trabajo_quien_o_quienes_fueron_los_agresores,
+         agresion_fisica_12m = x61_en_los_ultimos_12_meses_usted_ha_sido_agredido_a_fisicamente_en_su_lugar_de_trabajo,
+         agresion_fisica_12m_quien = x62_respecto_a_la_agresion_o_agresiones_fisicas_recibidas_en_su_lugar_de_trabajo_en_los_ultimos_12_meses_quien_o_quienes_fueron_los_agresores,
+         agresion_insulto = x64_alguna_vez_durante_su_vida_profesional_ha_sido_insultado_en_su_lugar_de_trabajo,
+         agresion_insulto_quien = x65_respecto_a_haber_sido_insultado_en_su_lugar_de_trabajo_quien_o_quienes_lo_o_la_insultaron,
+         agresion_insulto_12m = x66_en_los_ultimos_12_meses_usted_ha_sido_insultado_en_su_lugar_de_trabajo,
+         agresion_insulto_12m_quien = x67_respecto_a_haber_sido_insultado_en_su_lugar_de_trabajo_en_los_ultimos_12_meses_quien_o_quienes_fueron_los_agresores,
+         agresion_amenaza = x69_alguna_vez_durante_su_vida_profesional_ha_sido_amenazado_en_su_lugar_de_trabajo,
+         agresion_amenaza_quien = x70_respecto_a_haber_sido_amenazado_en_su_lugar_de_trabajo_quien_o_quienes_fueron_los_agresores,
+         agresion_amenaza_12m = x71_en_los_ultimos_12_meses_usted_ha_sido_amenazado_en_su_lugar_de_trabajo, 
+         agresion_amenaza_12m_quien = x72_respecto_a_haber_sido_amenazado_en_su_lugar_de_trabajo_en_los_ultimos_12_meses_quien_o_quienes_lo_amenazaron,
+         agresion_sexual = x74_alguna_vez_durante_su_vida_profesional_ha_sido_acosado_a_sexualmente_en_su_lugar_de_trabajo,
+         agresion_sexual_quien = x75_respecto_a_haber_sido_acosado_a_sexualmente_en_su_lugar_de_trabajo_quien_o_quienes_lo_la_acosaron,
+         agresion_sexual_12m = x76_en_los_ultimos_12_meses_usted_ha_sido_acosado_a_sexualmente_en_su_lugar_de_trabajo,
+         agresion_sexual_12m_quien = x77_respecto_a_haber_sido_acosado_a_sexualmente_en_su_lugar_de_trabajo_en_los_ultimos_12_meses_quien_o_quienes_lo_la_acosaron,
+         corrupcion = x92_cual_es_el_nivel_de_corrupcion_que_usted_percibe_en_el_sistema_de_salud_del_peru,
+         discriminacion = x93_en_los_ultimos_12_meses_usted_ha_sido_victima_de_algun_acto_de_discriminacion_en_el_sistema_de_salud_peruano) %>% 
   mutate(distrito_ipress = stri_trans_general(str_to_title(distrito_ipress), "Latin-ASCII"),
          distrito_ipress = case_when(distrito_ipress == "Vitarte" ~ "Ate Vitarte",
                                      TRUE ~ distrito_ipress),
@@ -161,24 +178,45 @@ data2 <- readxl::read_xlsx(here("data/Database_4.xlsx")) %>%
     
     # Keep existing values if no match
     TRUE ~ vivienda
-  ))
+  ),
+  horas_semana = case_when(horas_semana > 80 ~ NA,
+                           TRUE ~ horas_semana),
+  ano_titulacion = case_when(ano_titulacion == 20 ~ 2020,
+                               TRUE ~ ano_titulacion),
+  tiempo_titulo = 2024 - ano_titulacion,
+  tiempo_eess = case_when(tiempo_eess > tiempo_titulo ~ NA,
+                          TRUE ~ tiempo_eess),
+  across(.cols = c(agresion_fisica, agresion_insulto, agresion_amenaza, agresion_sexual), 
+                .fns = ~case_when(. == "Si, más de una vez" ~ "Si",
+        . == "Si, sólo una vez" ~ "Si",
+        TRUE ~ "No")),
+        across(.cols = c(agresion_fisica_12m, agresion_insulto_12m, agresion_amenaza_12m, agresion_sexual_12m), 
+                .fns = ~case_when(. == "Si, más de una vez" ~ "Si",
+        . == "Si, sólo una vez" ~ "Si",
+        is.na(.) ~ NA_character_,
+        TRUE ~ "No")),
+  corrupcion = str_to_title(corrupcion),
+  corrupcion = factor(corrupcion, levels = c("Muy Bajo", "Bajo", "Moderado", "Alto", "Muy Alto")),
+  corrupcion_2 = case_when(corrupcion == "Muy Bajo" | corrupcion == "Bajo" ~ "Bajo",
+                           corrupcion == "Moderado" ~ "Moderado",
+                           corrupcion == "Alto" | corrupcion == "Muy Alto" ~ "Alto"),
+  corrupcion_2 = factor(corrupcion_2, levels = c("Bajo", "Moderado", "Alto")),
+  discriminacion = case_when(discriminacion == "No" ~ "No",
+                             TRUE ~ "Si"))
 
-#No considerando las siguientes variables: idioma, vive_familia, fuente_ingreso, universidad, tiempo_eess
+#No considerando las siguientes variables: idioma, vive_familia, fuente_ingreso, universidad
 
-#evaluar si es de interes: factor_dejar_eess, horas_semana (la gente hace guardias, ¿cómo considerar el número de horas?)
+#evaluar si es de interes: factor_dejar_eess
+
+#cleaning outcomes
+
+#data2 %>% count(corrupcion_2)
+  
 
 #str(data2)
 #names(data2) 
 #get_dupes(data2) # no duplicates
 
-# separando el codigo de limpieza en dos porque con uno solo no corre
-data2 <- data2 %>% 
-  mutate(ano_titulacion = case_when(ano_titulacion == 20 ~ 2020,
-                               TRUE ~ ano_titulacion))
-
-#data2 %>% count(horas_semana)
-
-#class(data2$ano_titulacion)
 
 ```
 
@@ -270,32 +308,153 @@ ano_titulacion_graph <- data2 %>%
        y = "N") +
   theme_minimal()
 
-ano_titulacion_graph
 ```
 
 
 ### Descripción de las variables de interés
 
-Violencia....
+#### Violencia
 
-Corrupción...
+Se evaluaron distintos tipos de violencia como violencia física, verbal (insultos y amenazas) y acoso sexual. Se preguntó por estas experiencias en el ambiente laboral independientemente del momento, y por estas experiencias en el ambiente laboral en el último año. Estos resultados se pueden apreciar en la tabla 2.
 
-```{r}
-#Tabla 2. Violencia y corrupción
+```{r include=FALSE, message=FALSE, echo=FALSE}
+#Tabla 2. Tipos de violencia
+
+tabla2 <- data2 %>% 
+  select(starts_with("agresion") & !ends_with("quien")) %>% 
+  tbl_summary(label = list(agresion_fisica = "Agresión física",
+                           agresion_fisica_12m = "Agresión física (últimos 12 meses)",
+                           agresion_insulto = "Insultos",
+                           agresion_insulto_12m = "Insultos (últimos 12 meses)",
+                           agresion_amenaza = "Amenazas",
+                           agresion_amenaza_12m = "Amenazas (últimos 12 meses)",
+                           agresion_sexual = "Acoso sexual",
+                           agresion_sexual_12m = "Acoso sexual (últimos 12 meses)"
+                           ),
+              missing = "no") %>% 
+              modify_header(label ~ "**Características**") %>%
+              modify_caption("**Tabla 2: Resumen de diversos tipos de agresión reportados por profesionales de salud**")
+
+tabla2
 
 ```
 
-### Variables sociodemográficas asociadas a violencia
+```{r echo=FALSE, message=FALSE}
+tabla2
+```
 
-```{r}
-# Tabla 3. Factores asociados a violencia
+#### Corrupción y discriminación
 
+Con respecto a la corrupción, los participantes respondieron sobre la percepción de corrupción en el establecimiento de salud y sobre su experiencia alrededor de discriminación en establecimientos de salud. Los resultados se muestran en la tabla 3.
+
+```{r include=FALSE, message=FALSE, echo=FALSE}
+#Tabla 3. Corrupción y discrimación
+
+tabla3 <- data2 %>% 
+  select(corrupcion, discriminacion) %>% 
+  tbl_summary(label = list(corrupcion = "Percepción de corrupción en la institución",
+                   discriminacion = "Percepción de discriminación en establecimientos de salud")) %>% 
+              modify_header(label ~ "**Características**") %>%
+              modify_caption("**Tabla 3: Percepción de corrupción y discriminación en los establecimientos de salud**")
+
+tabla3
+```
+
+```{r message=FALSE, echo=FALSE}
+
+tabla3
+
+```
+
+
+### Variables sociodemográficas asociadas a violencia {.tabset}
+
+```{r echo=FALSE, message=FALSE, include=FALSE}
+# Tabla 4. Factores asociados a violencia fisica
+
+bivariado_violencia <- function(data) {
+  
+outcome <- colnames(data)[startsWith(colnames(data), "agresion") & !endsWith(colnames(data), "quien") &  !endsWith(colnames(data), "12m")]
+  
+tables <- list()
+
+  for (i in outcome) {
+
+tabla <- data %>% 
+  select(c(edad, profesion, sexo, grupo_etnico, all_of(i))) %>% 
+  tbl_summary(by = !!sym(i),
+              statistic = list(edad ~ "{median} ({min} - {max})"),
+              percent = "row",
+              label = list(edad = "Edad (años)",
+               profesion = "Profesión",
+               sexo = "Sexo",
+               grupo_etnico = "Grupo étnico"
+               )) %>%
+  add_p() %>% 
+  modify_header(label ~ "**Características**") %>%
+   modify_caption(paste0("**Variables asociadas a ", i,"**"))
+
+tables[[i]] <- tabla
+
+}  
+
+return(tables)
+}
+
+# Generate tables
+tables_list <- bivariado_violencia(data2)
+
+tables_list$agresion_fisica
+
+```
+
+#### Agresión física
+
+```{r echo=FALSE, message=FALSE}
+tables_list$agresion_fisica
+```
+
+#### Insultos
+
+```{r echo=FALSE, message=FALSE}
+tables_list$agresion_insulto
+```
+
+#### Amenazas
+
+```{r echo=FALSE, message=FALSE}
+tables_list$agresion_amenaza
+```
+
+#### Acoso
+
+```{r echo=FALSE, message=FALSE}
+tables_list$agresion_sexual
 ```
 
 ### Variables sociodemográficas asociadas a la percepción de corrupción
 
-```{r}
-# Tabla 4. Factores asociados a percepción de corrupción
+```{r echo=FALSE, message=FALSE, include=FALSE}
+# Tabla 5. Factores asociados a percepción de corrupción
+tabla5 <- data2 %>% 
+  select(edad, profesion, sexo, grupo_etnico, corrupcion_2) %>% 
+  tbl_summary(by = corrupcion_2,
+              statistic = list(edad ~ "{median} ({min} - {max})"),
+              percent = "row",
+              label = list(edad = "Edad (años)",
+               profesion = "Profesión",
+               sexo = "Sexo",
+               grupo_etnico = "Grupo étnico"
+               )) %>%
+  add_p() %>% 
+  modify_header(label ~ "**Características**") %>%
+   modify_caption(paste0("**Variables asociadas a la perción de corrupción**"))
+
+```
+
+```{r echo=FALSE, message=FALSE}
+
+tabla5
 
 ```
 
@@ -331,3 +490,4 @@ Corrupción...
  
    ![Ejemplos de las respuestas de "tiempo en establecimiento" en la base de datos](image/tiempo_eess_capture.png)
  
+ - No se encuentran factores sociodemográficos asociados, pero es posible que sea debido al tamaño de muestra. Buscar hacer al encuesta representativa e incluir grupos de interés. Por ejemplo, ciertos grupos étnicos podrían presentar más riesgo de enfrentar ciertos tipos de violencia.
