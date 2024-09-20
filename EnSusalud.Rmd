@@ -1,8 +1,11 @@
 ---
-title: "EnSusalud"
-author: "Jessica Zafra"
-date: "2024-09-15"
-output: html_document
+title: "Percepciones sobre corrupción, discriminación y violencia en usuarios externos e internos de hospitales del Ministerio de Salud y de Gobiernos Regionales" 
+author: "Jessica Zafra, 
+         David Villarreal"
+date: "2024-09-20"
+output: 
+  html_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -19,7 +22,10 @@ pacman::p_load(tidyverse,
                inspectdf,
                gtsummary,
                haven,
-               stringi)
+               stringi,
+               plotly,
+               ggplot2,
+               broom.helpers)
 
 ```
 
@@ -40,27 +46,36 @@ Estudio secundario en el cuál se analizó un piloto de la Encuesta Nacional de 
 
 Esta encuesta tuvo un diseño transversal y fue realizada en profesionales de salud que trabajan en hospitales públicos adscritos al Ministerio de Salud (MINSA) y los Gobiernos Regionales (GOREs) en Perú durante el primer semestre del año 2024.
 
-### Población
-Se incluyó a profesionales profesionales de medicina, enfermería u obstreticia en las IPRESS seleccionados por al menos 12 meses continuos en la IPRESS. Se excluyó a aquellos que no puedan responder debido a un accidente cerebro vascular con secuelas, aquellos que no desean participar o que no firmen el consentimiento informado. Además, se excluyó a aquellos que realicen exclusivamente teletrabajo.
+### Participantes
+Se incluyó a profesionales profesionales de medicina, enfermería u obstreticia en las IPRESS seleccionados por al menos 12 meses continuos en la IPRESS. Se excluyó a aquellos que no puedan responder debido a un accidente cerebro vascular con secuelas, aquellos que no desean participar o que no firmen el consentimiento informado. Además, se excluyó a aquellos que realicen exclusivamente teletrabajo. Se eliminó de la base de datos a aquellos que no completaron el cuestionario por completo.
 
-Se eliminó de la base de datos a aquellos que no completaron el cuestionario por completo.
-
-### Tamaño de muestra
-
-
-### Muestreo 
-
-Se realizó un muestreo por conveniencia. El personal de campo buscó entrevistar profesionales de salud en los establecimientos de salud.
+Se realizó un muestreo por conveniencia. El personal de campo buscó entrevistar profesionales de salud en los establecimientos de salud. 
 
 ### Variables y medición
-Se consideraron variables sociodemográficas como: ...
+Covariables: Se consideraron variables sociodemográficas como la edad en años, profesión (enfermería, obstetricia, medicina), sexo (mujer/hombre), estado civil (casado/a o conviviente, divorciado/a o separado/a, soltero/a, viudo/a), tipo de vivienda (propia, alquilada, casa familiar, otros), número de personas dependientes del participante y si tuvo que dejar a su familia por motivos laborales.
 
-Además, las variables de interés corrupción, discriminación y violencia...
+Violencia: Se evaluó si los participantes habían experimentado alguno de los cuatro tipos de violencia: agresión física, insultos, amenazas y acoso. Cada tipo de violencia se registró de manera dicotómica, es decir, como presencia o ausencia. Además, se creó la variable "algún tipo de violencia" que agrupó los 4 tipos de violencia. Todas estas variables se evaluaron en dos periodos de tiempo; a lo largo del trabajo en establecimientos de salud y en el último año.
+
+Percepción de corrupción: Esta variable se midió a través de una única pregunta sobre el nivel de corrupción percibido en el sistema de salud del Perú, utilizando una escala de Likert que iba de 1 (muy alto) a 5 (muy bajo). Se creó una variable dicotómica agrupando las categorías "muy bajo", "bajo" y "moderado" en "bajo/moderado" y "alto" y "muy alto" como "alto".
+
+Percepción de discriminación: La discriminación se evaluó mediante una pregunta que indagaba si en los últimos 12 meses el participante había sido víctima de algún acto de discriminación en el sistema de salud peruano. Se utilizó una escala dicotómica para determinar la percepción de discriminación.
+
+Síntomas depresivos: Se utilizó el El PHQ-2 que es una versión abreviada del PHQ-9 con solo dos ítems (Spitzer et al., 1999), centrándose en los dos primeros ítems relacionados con los síntomas centrales de la depresión (anhedonia y estado de ánimo depresivo) y proporcionando puntuaciones entre 0 y 6. El PHQ-2 fue validado en Perú, mostró niveles adecuados de consistencia interna y óptimos valores de sensibilidad y especificidad con un punto de cohorte de ≥2 puntos (Villarreal-Zegarra et al., 2023). 
+
+Síntomas ansiosos: Se usó el GAD-2 que es una adaptación del GAD-7 (Kroenke et al., 2007), enfocándose en las expresiones emocionales y cognitivas de la ansiedad del DSM-IV (ítems 1 y 2). El GAD-2 muestra buenos valores de consistencia interna, una relación con su versión extendida muy alta (r>0,80) en el contexto peruano, y óptimos valores de sensibilidad y especificidad con un punto de cohorte de ≥2 puntos (Villarreal-Zegarra et al., 2023). 
+
+Escala de satisfacción sobre las condiciones de trabajo de los centros de salud: Evaluar las condiciones de trabajo percibidas por el profesional de la salud. Los indicadores de la escala se encuentran satisfechos con la posibilidad de ascenso, organización de los centros de salud, carga de trabajo, horarios, salario, oportunidades, infraestructura y equipamiento, relación con los superiores, procedimientos administrativos e higiene de los centros de salud. Este instrumento presento una estructura factorial de dos dimensiones, la primera relacionada a condiciones individuales y la segunda en relación con condiciones estructurales. Además, el instrumento presento valores adecuados de confiabilidad para ambas dimensiones (Villarreal-Zegarra et al., 2021).
 
 ### Análisis de datos
 
 Se realizó una limpieza de la base de datos. Para ello se homogenizó las categorías de respuesta de las variables categóricas y, para las variables numéricas, se eliminó valores implausibles.
 
+Para la estadística descriptiva de las variables categóricas se presentan frecuencias y porcentajes. Para las variables numéricas se presentan medidas de tendencia central y dispersión dependiendo de la distribución de los datos.
+
+Se evaluó la asociación entre las variables sociodemográficas, salud mental y satisfacción con las variables de interés. Para ello se utilizó un análisis bivariado inicial, y luego se crearon modelos de regresión de Poisson incluyendo las diversas variables en el modelo.
+
+Los análisis se realizaron utilizando RStudio (2024.04.2+764) y Stata v...
+El código puede ser descargado desde GitHub (https://github.com/Jzafrat/susalud).
 
 ```{r = explorando base, echo=FALSE, message=FALSE}
 
@@ -110,7 +125,28 @@ data2 <- readxl::read_xlsx(here("data/Database_4.xlsx")) %>%
          agresion_sexual_12m = x76_en_los_ultimos_12_meses_usted_ha_sido_acosado_a_sexualmente_en_su_lugar_de_trabajo,
          agresion_sexual_12m_quien = x77_respecto_a_haber_sido_acosado_a_sexualmente_en_su_lugar_de_trabajo_en_los_ultimos_12_meses_quien_o_quienes_lo_la_acosaron,
          corrupcion = x92_cual_es_el_nivel_de_corrupcion_que_usted_percibe_en_el_sistema_de_salud_del_peru,
-         discriminacion = x93_en_los_ultimos_12_meses_usted_ha_sido_victima_de_algun_acto_de_discriminacion_en_el_sistema_de_salud_peruano) %>% 
+         discriminacion = x93_en_los_ultimos_12_meses_usted_ha_sido_victima_de_algun_acto_de_discriminacion_en_el_sistema_de_salud_peruano,
+         phq1 = x53_durante_las_2_ultimas_semanas_ha_tenido_poco_interes_o_placer_en_hacer_las_cosas,
+         phq2 = x53_durante_las_2_ultimas_semanas_se_ha_sentido_desanimada_o_triste_deprimida_o_o_sin_esperanza,
+         gad1 = x54_durante_las_2_ultimas_semanas_te_has_sentido_ansioso_nervioso_o_muy_alterado,
+         gad2 = x54_durante_las_2_ultimas_semanas_no_has_podido_dejar_de_preocuparte,
+         satis1 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_posibilidades_de_promocion_o_ascenso,
+  satis2 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_orden_de_los_servicios_y_organizacion_laboral,
+  satis3 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_la_valoracion_de_su_trabajo,
+  satis4 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_el_tipo_de_labor_que_realiza,
+  satis5 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_la_carga_laboral_que_tiene,
+  satis6 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_posicion_en_su_institucion_y_participacion_en_las_decisiones_de_gestion_de_su_servicio,
+  satis7 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_honorarios_o_sueldos_recibidos,
+  satis8 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_horario_o_jornada_de_trabajo,
+  satis9 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_la_relacion_con_sus_companeros_de_trabajo,
+  satis10 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_oportunidades_de_capacitacion_actualizacion,
+  satis11 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_la_infraestructura_e_instalaciones_de_servicios_agua_desague_luz_oxigeno_etc,
+  satis12 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_el_instrumental_y_equipamiento_para_atender_a_los_pacientes,
+  satis13 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_la_relacion_con_sus_jefes_o_superiores,
+  satis14 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_las_condiciones_de_higiene_y_bioseguridad,
+  satis15 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_el_llenado_de_registro_partes_ordenes_o_formatos_excluye_historia_clinica,
+  satis16 = x82_respecto_a_su_trabajo_en_esta_ipress_como_calificaria_su_nivel_de_satisfaccion_en_cuanto_a_el_respeto_y_consideracion_de_sus_pacientes
+) %>% 
   mutate(distrito_ipress = stri_trans_general(str_to_title(distrito_ipress), "Latin-ASCII"),
          distrito_ipress = case_when(distrito_ipress == "Vitarte" ~ "Ate Vitarte",
                                      TRUE ~ distrito_ipress),
@@ -195,28 +231,44 @@ data2 <- readxl::read_xlsx(here("data/Database_4.xlsx")) %>%
         . == "Si, sólo una vez" ~ "Si",
         is.na(.) ~ NA_character_,
         TRUE ~ "No")),
+  agresion_alguna = case_when(agresion_fisica == "Si" | agresion_insulto == "Si" | agresion_amenaza == "Si" | agresion_sexual == "Si" ~ "Si",
+                              TRUE ~ "No"),
+  agresion_alguna_12m = case_when(agresion_fisica_12m == "Si" | agresion_insulto_12m == "Si" | agresion_amenaza_12m == "Si" | agresion_sexual_12m == "Si" ~ "Si",
+                              TRUE ~ "No"),
   corrupcion = str_to_title(corrupcion),
   corrupcion = factor(corrupcion, levels = c("Muy Bajo", "Bajo", "Moderado", "Alto", "Muy Alto")),
-  corrupcion_2 = case_when(corrupcion == "Muy Bajo" | corrupcion == "Bajo" ~ "Bajo",
-                           corrupcion == "Moderado" ~ "Moderado",
+  corrupcion_2 = case_when(corrupcion == "Muy Bajo" | corrupcion == "Bajo" | corrupcion == "Moderado" ~ "Bajo/Moderado",
                            corrupcion == "Alto" | corrupcion == "Muy Alto" ~ "Alto"),
-  corrupcion_2 = factor(corrupcion_2, levels = c("Bajo", "Moderado", "Alto")),
+  corrupcion_2 = factor(corrupcion_2, levels = c("Bajo/Moderado", "Alto")),
   discriminacion = case_when(discriminacion == "No" ~ "No",
-                             TRUE ~ "Si"))
+                             TRUE ~ "Si")) %>% 
+  mutate(across(.cols = c(phq1, phq2, gad1, gad2),
+                .fns = ~case_when(. == "Nunca" ~ 0,
+                                  . == "Varios días" ~ 1,
+                                  . == "Más de la mitad de los días" ~ 2,
+                                  . == "Casi todo los días" ~ 3,
+                                  is.na(.) ~ NA))) %>% 
+  rowwise() %>% #rowwise to create the scale variables
+  mutate(phq_total = sum(c(phq1, phq2), na.rm = TRUE),
+         gad_total = sum(c(gad1, gad2), na.rm = TRUE),
+         satis_indiv = sum(c(satis1, satis3, satis4, satis5, satis6, satis8, satis9, satis13), na.rm = TRUE),
+         satis_estru = sum(c(satis11, satis12, satis14), na.rm = TRUE)) %>%
+  ungroup() %>% #to continue with cleaning after creating scales
+  mutate(depresion = case_when(phq_total >= 2 ~ "Si",
+                               phq_total <2 ~ "No",
+                               is.na(phq_total) ~ NA_character_),
+         ansiedad = case_when(gad_total >= 2 ~ "Si",
+                               gad_total <2 ~ "No",
+                               is.na(gad_total) ~ NA_character_))
 
 #No considerando las siguientes variables: idioma, vive_familia, fuente_ingreso, universidad
-
 #evaluar si es de interes: factor_dejar_eess
 
-#cleaning outcomes
-
-#data2 %>% count(corrupcion_2)
-  
+#data2 %>% count(depresion)
 
 #str(data2)
 #names(data2) 
 #get_dupes(data2) # no duplicates
-
 
 ```
 
@@ -294,7 +346,7 @@ esp_sum <- data2 %>%
 
 ```
 
-La mayoría de los participantes se titularon en los últimos 15 años. La mayoría (`r esp_sum[2,1]`, `r esp_sum[3,1]`%) contaba con una especialidad y `r esp_sum[2,3]` (`r esp_sum[3,3]`%) estaban realizando una.
+La mayoría de los participantes se titularon en los últimos 15 años. La mayoría (`r esp_sum[1,2]`, `r esp_sum[1,3]`%) contaba con una especialidad y `r esp_sum[3,2]` (`r esp_sum[3,3]`%) estaban realizando una.
 
 En el siguiente gráfico se puede observar la distribución del año de titulación.
 
@@ -308,14 +360,13 @@ ano_titulacion_graph <- data2 %>%
        y = "N") +
   theme_minimal()
 
+ano_titulacion_graph
 ```
 
 
 ### Descripción de las variables de interés
 
 #### Violencia
-
-Se evaluaron distintos tipos de violencia como violencia física, verbal (insultos y amenazas) y acoso sexual. Se preguntó por estas experiencias en el ambiente laboral independientemente del momento, y por estas experiencias en el ambiente laboral en el último año. Estos resultados se pueden apreciar en la tabla 2.
 
 ```{r include=FALSE, message=FALSE, echo=FALSE}
 #Tabla 2. Tipos de violencia
@@ -329,23 +380,79 @@ tabla2 <- data2 %>%
                            agresion_amenaza = "Amenazas",
                            agresion_amenaza_12m = "Amenazas (últimos 12 meses)",
                            agresion_sexual = "Acoso sexual",
-                           agresion_sexual_12m = "Acoso sexual (últimos 12 meses)"
+                           agresion_sexual_12m = "Acoso sexual (últimos 12 meses)",
+                           agresion_alguna = "Algún tipo de violencia",
+                           agresion_alguna_12m = "Algún tipo de violencia (últimos 12 meses)"
                            ),
               missing = "no") %>% 
               modify_header(label ~ "**Características**") %>%
               modify_caption("**Tabla 2: Resumen de diversos tipos de agresión reportados por profesionales de salud**")
-
-tabla2
-
 ```
 
-```{r echo=FALSE, message=FALSE}
+Se evaluaron distintos tipos de violencia como violencia física, verbal (insultos y amenazas) y acoso sexual. Se preguntó por estas experiencias en el ambiente laboral independientemente del momento, y por estas experiencias en el ambiente laboral en el último año. 
+
+Al agrupar todos los tipos de violencia (agresión física, insultos, amenazas y acoso sexual), se halló una frecuencia a lo largo de la vida profesional de 41%, mientras que en el último año fue de 22%.
+
+Estos resultados se pueden apreciar en la tabla 2.
+
+```{r message=FALSE, echo=FALSE}
 tabla2
 ```
 
+```{r include=FALSE, message=FALSE, echo=FALSE}
+#Graficos barras
+
+bar_agresion_fisica <- data2 %>%
+  select(agresion_fisica, sexo) %>%
+  count(agresion_fisica, sexo) %>%
+  group_by(sexo) %>%
+  mutate(proportion = n / sum(n)) %>%
+  ggplot(mapping = aes(x = sexo, 
+                       y = proportion, 
+                       fill = agresion_fisica)) +
+  geom_bar(stat = "identity", position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "Sexo", 
+       y = "Proportion", 
+       fill = "Agresión Física") +
+  theme_minimal()
+
+bar_agresion_fisica
+```
+
+```{r include=FALSE, message=FALSE, echo=FALSE}
+#Grafico donut
+
+pie_agresion_fisica <- data2 %>%
+  select(agresion_fisica) %>%
+  count(agresion_fisica) %>% 
+  mutate(fraction = n/sum(n),
+         ymax = cumsum(fraction),
+         ymin = lag(ymax, default = 0),
+         tooltip_label = paste0(agresion_fisica, ": ", round(fraction*100,2))) %>% 
+  ggplot(aes(ymax = ymax,
+             ymin = ymin,
+             xmax = 4,
+             xmin = 3,
+             fill = agresion_fisica,
+             text = tooltip_label)) +
+  geom_rect() +
+  coord_polar(theta = "y") +
+  xlim(c(2,4)) +
+  theme_void() +
+  labs(title = "Gráfico de pie para agresión física",
+       fill = "Agresión física")
+  
+#ggplotly(pie_agresion_fisica)
+
+```
 #### Corrupción y discriminación
 
-Con respecto a la corrupción, los participantes respondieron sobre la percepción de corrupción en el establecimiento de salud y sobre su experiencia alrededor de discriminación en establecimientos de salud. Los resultados se muestran en la tabla 3.
+Con respecto a la corrupción, los participantes respondieron sobre la percepción de corrupción en el establecimiento de salud y sobre su experiencia alrededor de discriminación en establecimientos de salud. 
+
+se halló que la mayoría de personas consideraba que la corrupción en la institución era alta (27%) o muy alta (62%)
+
+Los resultados se muestran en la tabla 3.
 
 ```{r include=FALSE, message=FALSE, echo=FALSE}
 #Tabla 3. Corrupción y discrimación
@@ -357,7 +464,6 @@ tabla3 <- data2 %>%
               modify_header(label ~ "**Características**") %>%
               modify_caption("**Tabla 3: Percepción de corrupción y discriminación en los establecimientos de salud**")
 
-tabla3
 ```
 
 ```{r message=FALSE, echo=FALSE}
@@ -366,8 +472,36 @@ tabla3
 
 ```
 
+```{r include=FALSE, message=FALSE, echo=FALSE}
+#Grafico donut
+
+pie_corrupcion <- data2 %>%
+  select(corrupcion) %>%
+  count(corrupcion) %>% 
+  mutate(fraction = n/sum(n),
+         ymax = cumsum(fraction),
+         ymin = lag(ymax, default = 0),
+         tooltip_label = paste0(corrupcion, ": ", round(fraction*100,2))) %>% 
+  ggplot(aes(ymax = ymax,
+             ymin = ymin,
+             xmax = 4,
+             xmin = 3,
+             fill = corrupcion,
+             text = tooltip_label)) +
+  geom_rect() +
+  coord_polar(theta = "y") +
+  xlim(c(2,4)) +
+  theme_void() +
+  labs(title = "Gráfico de pie sobre la percepción de corrupción",
+       fill = "Nivel de corrupción percibido")
+
+```
 
 ### Variables sociodemográficas asociadas a violencia {.tabset}
+
+Se exploró algunas variables sociodemográficas como la edad, el sexo, profesión y grupo étnico para evaluar su asociación con los distintos tipo de violencia. Para la variable algún tipo de agresión a lo largo de su vida laboral, se halló que aquellos que manifestaron haber sido víctimas de violencia, tuvieron una mediaba de edad mayor. El resto de variables no se halló asociada al reporte de los diversos tipo de violencia.
+
+Los resultados para cada una de las variables se muestran a continuación.
 
 ```{r echo=FALSE, message=FALSE, include=FALSE}
 # Tabla 4. Factores asociados a violencia fisica
@@ -388,8 +522,7 @@ tabla <- data %>%
               label = list(edad = "Edad (años)",
                profesion = "Profesión",
                sexo = "Sexo",
-               grupo_etnico = "Grupo étnico"
-               )) %>%
+               grupo_etnico = "Grupo étnico")) %>%
   add_p() %>% 
   modify_header(label ~ "**Características**") %>%
    modify_caption(paste0("**Variables asociadas a ", i,"**"))
@@ -432,7 +565,15 @@ tables_list$agresion_amenaza
 tables_list$agresion_sexual
 ```
 
+#### Algún tipo de agresión
+
+```{r echo=FALSE, message=FALSE}
+tables_list$agresion_alguna
+```
+
 ### Variables sociodemográficas asociadas a la percepción de corrupción
+
+Se evaluó la asociación entre variables sociodemográficas y la percepción de corrupción en la institución. Se halló que estas variables no se encontraron asociadas. Los resulados se muestran en la siguiente tabla.
 
 ```{r echo=FALSE, message=FALSE, include=FALSE}
 # Tabla 5. Factores asociados a percepción de corrupción
@@ -458,14 +599,293 @@ tabla5
 
 ```
 
+### Variables sociodemográficas asociadas a la percepción de discriminación en establecimientos de salud
 
-### Otras a explorar
+Se evaluó la asociación entre variables sociodemográficas y la percepción de discriminación en los establecimientos de salud. No se halló una asociación entre estas variables. Los resulados se muestran en la siguiente tabla.
 
-```{r}
-#dejar_eess
+```{r echo=FALSE, message=FALSE, include=FALSE}
+# Tabla 6. Factores asociados a percepción de discriminación en los establecimientos de salud
+tabla6 <- data2 %>% 
+  select(edad, profesion, sexo, grupo_etnico, discriminacion) %>% 
+  tbl_summary(by = discriminacion,
+              statistic = list(edad ~ "{median} ({min} - {max})"),
+              percent = "row",
+              label = list(edad = "Edad (años)",
+               profesion = "Profesión",
+               sexo = "Sexo",
+               grupo_etnico = "Grupo étnico"
+               )) %>%
+  add_p() %>% 
+  modify_header(label ~ "**Características**") %>%
+   modify_caption(paste0("**Variables asociadas a la perción de discriminación**"))
 
 ```
 
+```{r echo=FALSE, message=FALSE}
+
+tabla6
+
+```
+
+### Salud mental asociada a violencia {.tabset}
+
+Además de las variables sociodemográficas, se exploró la asociación de los diversos tipos de violencia con la salud mental. Para ello se analizó depresión (PHQ2 > 2), ansiedad (GAD2 > 2). Además se exploró la satisfacción con el establecimiento de salud.
+
+Se halló que la depresión se asoció al una frecuencia de reporte de agresión física y acoso sexual mayor. Mientras que la ansiedad fue más frecuente en aquellos que reportaron haber sido víctimas de insultos y amenazas, en comparación con aquellos que no. Al evaluar todo tipo de violencia, la asociación con ansiedad se mantuvo.
+
+Le haber sido víctima de insultos en el ambiente laboral se asoció a menores puntajes en la satisfacción con las condiciones individuales. Mientras que el haber recibido amenazas se asoció a menores puntajes en la satisfacción con las condiciones estructurales.
+
+Los resultados se muestran en las siguientes tablas.
+
+```{r echo=FALSE, message=FALSE, include=FALSE}
+# Salud mental y violencia
+
+mental_violencia <- function(data) {
+  
+outcome <- colnames(data)[startsWith(colnames(data), "agresion") & !endsWith(colnames(data), "quien") &  !endsWith(colnames(data), "12m")]
+  
+tables <- list()
+
+  for (i in outcome) {
+
+tabla <- data %>% 
+  select(c(depresion, ansiedad, satis_indiv, satis_estru, all_of(i))) %>% 
+  tbl_summary(by = !!sym(i),
+              statistic = list(satis_indiv ~ "{median} ({min} - {max})",
+                               satis_estru ~ "{median} ({min} - {max})"),
+              percent = "row",
+              label = list(depresion = "Depresión",
+               ansiedad = "Ansiedad",
+               satis_indiv = "Satisfacción - condiciones individuales",
+               satis_estru = "Satisfacción - condiciones estructurales")) %>%
+  add_p() %>% 
+  modify_header(label ~ "**Características**") %>%
+   modify_caption(paste0("**Variables asociadas a ", i,"**"))
+
+tables[[i]] <- tabla
+
+}  
+
+return(tables)
+}
+
+# Generate tables
+tables_mental_list <- mental_violencia(data2)
+
+```
+
+#### Agresión física
+
+```{r echo=FALSE, message=FALSE}
+tables_mental_list$agresion_fisica
+```
+
+#### Insultos
+
+```{r echo=FALSE, message=FALSE}
+tables_mental_list$agresion_insulto
+```
+
+#### Amenazas
+
+```{r echo=FALSE, message=FALSE}
+tables_mental_list$agresion_amenaza
+```
+
+#### Acoso
+
+```{r echo=FALSE, message=FALSE}
+tables_mental_list$agresion_sexual
+```
+
+#### Algún tipo de agresión
+
+```{r echo=FALSE, message=FALSE}
+tables_mental_list$agresion_alguna
+```
+
+### Salud mental asociada a la percepción de corrupción
+
+Al evaluar la percepción de corrupción, se halló que la percepción alta o muy alta de corrupción en la institución se asoció a menores puntajes en las escalas de satisfacción con condiciones individuales y estructurales. No se halló una asociación con depresión o ansiedad. Ver tabla.
+
+```{r echo=FALSE, message=FALSE, include=FALSE}
+# Tabla 7. Salud mental asociada a la percepción de corrupción
+tabla7 <- data2 %>% 
+  select(depresion, ansiedad, satis_indiv, satis_estru, corrupcion_2) %>% 
+  tbl_summary(by = corrupcion_2,
+              statistic = list(satis_indiv ~ "{median} ({min} - {max})",
+                               satis_estru ~ "{median} ({min} - {max})"),
+              percent = "row",
+              label = list(depresion = "Depresión",
+               ansiedad = "Ansiedad",
+               satis_indiv = "Satisfacción - condiciones individuales",
+               satis_estru = "Satisfacción - condiciones estructurales")
+               ) %>%
+  add_p() %>% 
+  modify_header(label ~ "**Características**") %>%
+   modify_caption(paste0("**Variables asociadas a la perción de corrupción**"))
+
+```
+
+```{r echo=FALSE, message=FALSE}
+
+tabla7
+
+```
+
+### Salud mental asociada a la percepción de discriminación en los establecimientos de salud
+
+La percepción de discriminación en los establecimientos de salud se asoció a depresión, ansiedad y menores puntajes en la escala de satisfacción con las condiciones individuales.
+
+```{r echo=FALSE, message=FALSE, include=FALSE}
+# Tabla 8. Salud mental asociada a la percepción de discriminación
+tabla8 <- data2 %>% 
+  select(depresion, ansiedad, satis_indiv, satis_estru, discriminacion) %>% 
+  tbl_summary(by = discriminacion,
+              statistic = list(satis_indiv ~ "{median} ({min} - {max})",
+                               satis_estru ~ "{median} ({min} - {max})"),
+              percent = "row",
+              label = list(depresion = "Depresión",
+                           ansiedad = "Ansiedad",
+                           satis_indiv = "Satisfacción - condiciones individuales",
+                           satis_estru = "Satisfacción - condiciones estructurales")) %>%
+  add_p() %>% 
+  modify_header(label ~ "**Características**") %>%
+   modify_caption(paste0("**Variables asociadas a la percepción de discriminación**"))
+
+```
+
+```{r echo=FALSE, message=FALSE}
+
+tabla8
+
+```
+
+### Factores asociados a los desenlaces de interés {.tabset}
+
+Finalmente, se construyeron modelos de regresión de Poisson para evaluar qué variables sociodemográficas, de salud mental o satisfacción se asociaron a las variables de interés.
+
+Al evaluar la variable de algún tipo de violencia, se halló una mayor frecuencia de agresión con el incremento de la edad y la presencia de ansiedad.
+
+Además se halló una mayor frecuencia de insultos con el incremento de la edad y la presencia de ansiedad. Así como una menor frecuencia de acoso con mayores niveles de satisfacción con las condiciones estructurales.
+
+Con respecto a la corrupción, no se hallaron asociaciones en el modelo de regresión. Mientras que para la percepción de discriminación se halló una asociación con la ansiedad.
+
+```{r echo=FALSE, message=FALSE, include=FALSE}
+#Regresiones
+
+data3 <- data2 %>% 
+  select(edad, sexo, depresion, ansiedad, satis_indiv, satis_estru, agresion_fisica, agresion_insulto, agresion_amenaza, agresion_sexual, agresion_alguna, corrupcion_2, discriminacion) %>% 
+  mutate(across(.cols = c(agresion_fisica, agresion_insulto, agresion_amenaza, agresion_sexual, agresion_alguna, discriminacion, ansiedad, depresion),
+                .fns = ~case_when(. == "Si" ~ 1,
+                                     .== "No" ~ 0,
+                                     is.na(.) ~ NA_integer_)),
+         corrupcion_2 = case_when(corrupcion_2 == "Bajo/Moderado" ~ 0,
+                                  corrupcion_2 == "Alto" ~ 1,
+                                  is.na(corrupcion_2) ~ NA_integer_))
+
+regresion_poisson <- function(data) {
+  
+  outcome <- c("agresion_fisica", "agresion_insulto", "agresion_amenaza", 
+               "agresion_sexual", "agresion_alguna", "corrupcion_2", "discriminacion")
+
+tables <- list()
+
+  for (i in outcome) {
+
+tabla <- glm(as.formula(paste0(i, " ~ sexo + edad + depresion + ansiedad + satis_indiv + satis_estru")),
+    data = data,
+    family = poisson()) %>% 
+  tbl_regression(exponentiate = TRUE,
+                 label = list(edad = "Edad (años)",
+                              sexo = "Sexo",
+                              depresion = "Depresión",
+                              ansiedad = "Ansiedad",
+                              satis_indiv = "Satisfacción - condiciones individuales",
+                              satis_estru = "Satisfacción - condiciones estructurales")) %>% 
+  modify_header(label ~ "**Características**") %>%
+   modify_caption(paste0("**Variables asociadas a ", i,"**")) %>% 
+  bold_labels()
+
+tables[[i]] <- tabla
+
+}  
+
+return(tables)
+}
+
+tables_poisson_list <- regresion_poisson(data3)
+
+```
+
+#### Agresión física
+
+```{r echo=FALSE, message=FALSE}
+tables_poisson_list$agresion_fisica
+```
+
+#### Insultos
+
+```{r echo=FALSE, message=FALSE}
+tables_poisson_list$agresion_insulto
+```
+
+#### Amenazas
+
+```{r echo=FALSE, message=FALSE}
+tables_poisson_list$agresion_amenaza
+```
+
+#### Acoso
+
+```{r echo=FALSE, message=FALSE}
+tables_poisson_list$agresion_sexual
+```
+
+#### Algún tipo de agresión
+
+```{r echo=FALSE, message=FALSE}
+tables_poisson_list$agresion_alguna
+```
+
+#### Corrupción
+
+```{r echo=FALSE, message=FALSE}
+tables_poisson_list$corrupcion_2
+```
+
+#### Discriminación
+
+```{r echo=FALSE, message=FALSE}
+tables_poisson_list$discriminacion
+```
+
+## Discusión
+
+### Resumen de resultados
+Se realizó un piloto en el que se entrevistó a `r n_muestra[1,1]` profesionales de salud sobre la violencia de distintos tipos en el centro laboral y sus percepciones sobre corrupción y discriminación en los establecimientos de salud.
+
+La frecuencia de violencia varió según el tipo. Siendo más frecuentes los insultos, seguidos de las amenazas. Al agrupar todos los tipos de violencia (agresión física, insultos, amenazas y acoso sexual), se halló una frecuencia a lo largo de la vida profesional de 41%, mientras que en el último año fue de 22%. Además, la presencia de acoso sexual fue de 5.8%, siendo mayor en el sexo feminino (7.2% versus 1.9%), sin llegar a ser estadísticamente significativo.
+
+Al evaluar la variable de algún tipo de violencia, se halló una mayor frecuencia de agresión con el incremento de la edad y la presencia de ansiedad. Esto fue similar con los insultos. Por otro lado, una menor frecuencia de acoso con mayores niveles de satisfacción con las condiciones estructurales.
+
+Dada la asociación entre la edad y la frecuencia de algún tipo de agresión y considerando que la población de estudio fue relativamente "joven" (la mayoría graduados dentro de los últimos 15 años), es posible que la frecuencia real de los diversos tipos de agresiones sea más alta. 
+
+Otro dato a resaltar es que, para las personas que reportan haber sido víctimas de insultos o amenazas, estos episodios se presentaron en más del 50% de los casos en el último año. Lo cuál indica que se trata de un problema actual (y no de algo que pasó have mucho tiempo).
+
+Con respecto a la corrupción, se halló que la mayoría tenía una percepción de que la corrupción en la institución era alta o muy alta. Por ello es importante explorar en futuros estudios las causas de esta percepción y cómo esta afecta el ambiente laboral, la calidad de la atención brindada a los usuarios y la satisfacción en el trabajo de los trabajadores. Si bien no se hallaron asociaciones en el modelo de regresión, es posible que esto se deba a una falta de potencia debido al tamaño de muestra.
+
+Finalmente, la percepción de discriminación se asoció con la ansiedad.
+
+### Limitaciones y fortalezas
+
+Sesgo de medición
+
+Sesgo de selección
+
+Debido a que se trató de un piloto, el muestreo se realizó por conveniencia. Es posible que aquellos que hayan respondido la encuesta tengan mayor sensibilidad por el tema, potencialmente porque se ven afectados. 
+
+No se incluyeron cantidades representativas de diversas poblaciones que podrían ser consideradas como vulnerables como aquellos que pertenecen a etnias distintas a la mestiza. En futuros estudio se podría utilizar una estrategia de muestreo para poder abordar este tipo de persona.
 
 ## Recomendaciones
 
@@ -479,6 +899,8 @@ tabla5
  
  Por ejemplo, la variable area de trabajo tiene respuestas que se refieren a la región, al puesto que ocupa la persona, al programa, al departamento, etc.
  
+ Esta variable es importante ya que nos podría ayudar a identificar en qué momento se presentan los episodios de violencia. Lo más lógico sería que pasen en el trato directo con los pacientes o en áreas administrativas (módulos de citas).
+ 
   ![Ejemplos de las respuestas de "area de trabajo" en la base de datos](image/area_trabajo_capture.png)
  - Brindar un desplegable para departamento, provincia y distrito. Esto facilita la limpieza de la base de datos y evita respuestas erroneas. 
  
@@ -489,5 +911,6 @@ tabla5
  - Considerar colocar restricciones para algunas variables numéricas. Por ejemplo, en el caso del tiempo en años viviendo en el establecimiento, hay valores inconsistentes. Esto se puede evitar colocando un máximo de años que sera creíble (¿menos de 100?)
  
    ![Ejemplos de las respuestas de "tiempo en establecimiento" en la base de datos](image/tiempo_eess_capture.png)
+ 
  
  - No se encuentran factores sociodemográficos asociados, pero es posible que sea debido al tamaño de muestra. Buscar hacer al encuesta representativa e incluir grupos de interés. Por ejemplo, ciertos grupos étnicos podrían presentar más riesgo de enfrentar ciertos tipos de violencia.
